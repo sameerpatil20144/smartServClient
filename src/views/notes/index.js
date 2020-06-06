@@ -270,7 +270,7 @@ const Notes = () => {
             toast.info('Reminder!!', {
                 position: "top-center",
                 autoClose: 5000,
-                hideProgressBar: false,
+                hideProgressBar: true,
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true
@@ -371,7 +371,7 @@ const Notes = () => {
 
     return (
         <div>
-            <ToastContainer position="top-center" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnVisibilityChange draggable pauseOnHover />
+            <ToastContainer position="top-center" autoClose={5000} hideProgressBar={true} newestOnTop={false} closeOnClick rtl={false} pauseOnVisibilityChange draggable pauseOnHover />
             {
                 <ValidatorForm onSubmit={handleSubmit}>
                     <ConfirmModal hideModal={hideModal} show={showModal} title="Are you sure you want to remove this record ?"  >
