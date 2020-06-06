@@ -59,6 +59,7 @@ const Notes = () => {
 
     //timer-time
     const [getTime, setTime] = useState('');
+    const [countDown, setCountDown] = useState('');
 
     //get id from element
     const [getActionId, setActionId] = useState('add')
@@ -93,6 +94,7 @@ const Notes = () => {
                         setStatus(0);
                         getRequestForNotes();
                         resetState();
+                        setCountDown(0)
                         setAlertMsg(msg, "success", setSuccErrMsg, 4000);
                     }
                     else {
@@ -134,6 +136,7 @@ const Notes = () => {
                     if (status) {
                         setStatus(0);
                         getRequestForNotes();
+                        setCountDown(0)
                         setAlertMsg(msg, "success", setSuccErrMsg, 4000);
                         getIdFromElement('add');
                         resetState();
@@ -246,10 +249,9 @@ const Notes = () => {
         let diff = getDiff(time, CURRENT_TIME)
         if (time === CURRENT_TIME) {
             setDone('1');
-            toast.info('Its Time !!', {
+            toast.info('Its time!!', {
                 position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
+                hideProgressBar: true,
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true
@@ -261,25 +263,44 @@ const Notes = () => {
                 notes: notes,
                 time: time
             }
+
             await putRequest(TEST_NOTES, sendData);
             if (status) {
                 getRequestForNotes();
+                setCountDown('')
             }
 
         } else if (diff === 300) {
-            toast.info('Reminder!!', {
+            var fiveMinutes = 60 * 5
+            toast.info('Reminder in !!', {
                 position: "top-center",
-                autoClose: 5000,
                 hideProgressBar: true,
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true
             });
-
+            startTimer(fiveMinutes)
         }
         else {
             console.log('not yet')
         }
+    }
+
+    //countdown
+    const startTimer = (duration) => {
+        var timer = duration, minutes, seconds;
+        setInterval(() => {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+            var display = minutes + ":" + seconds;
+            console.log('countDown: ', display)  //setting up countdown
+            setCountDown(display)
+            if (--timer < 0) {
+                timer = duration;
+            }
+        }, 1000);
     }
 
     //function to remove Note
@@ -371,7 +392,7 @@ const Notes = () => {
 
     return (
         <div>
-            <ToastContainer position="top-center" autoClose={5000} hideProgressBar={true} newestOnTop={false} closeOnClick rtl={false} pauseOnVisibilityChange draggable pauseOnHover />
+            <ToastContainer position="top-center" hideProgressBar={true} newestOnTop={false} closeOnClick rtl={false} pauseOnVisibilityChange draggable pauseOnHover />
             {
                 <ValidatorForm onSubmit={handleSubmit}>
                     <ConfirmModal hideModal={hideModal} show={showModal} title="Are you sure you want to remove this record ?"  >
@@ -391,7 +412,6 @@ const Notes = () => {
                     <div style={{ textAlign: 'center' }}>
                         <b style={{ fontSize: '20px' }}>{getDigitalTime}</b>
                     </div>
-
                     <Form.Row>
                         <Form.Group as={Col} md={12}>
                             <TextValidator label="Note" onChange={(event) => handleInputChange(event, 'inputTextArea')} name="note" as="textarea" id="" cols="50" rows="5" style={{ border: "solid 1px lightgray" }}
