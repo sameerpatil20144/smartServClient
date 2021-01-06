@@ -15,7 +15,7 @@
     "@react-pdf/styled-components": "^1.4.0",
     "@trendmicro/react-sidenav": "^0.4.5",
     "aws-sdk": "^2.604.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bootstrap": "^4.4.1",
     "emoji-regex": "^8.0.0",
     "eslint-plugin-disable": "^1.0.5",
